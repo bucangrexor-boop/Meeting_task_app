@@ -3,27 +3,7 @@
     orientation: "vertical"
     padding: 8
     spacing: 8
-    BoxLayout:
-        size_hint_y: None
-        height: "40dp"
-        TextInput:
-            id: name_input
-            hint_text: "Item name"
-        TextInput:
-            id: qty_input
-            hint_text: "Qty"
-            input_filter: "int"
-        Button:
-            text: "Add"
-            on_release: root.add_new()
-    ScrollView:
-        GridLayout:
-            id: items_box
-            cols: 1
-            size_hint_y: None
-            height: self.minimum_height
-            row_default_height: "48dp"
-            row_force_default: True
+
     BoxLayout:
         size_hint_y: None
         height: "40dp"
@@ -33,14 +13,29 @@
         Label:
             id: sync_status
             text: "Idle"
+        Label:
+            text: "Last sync: " + root.last_sync
 
-<ItemRow>:
+    ScrollView:
+        GridLayout:
+            id: items_box
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: "48dp"
+            row_force_default: True
+
+<TaskRow>:
     size_hint_y: None
     height: "48dp"
     orientation: "horizontal"
+    padding: 5
+    spacing: 10
+
     Label:
         id: name
         text: ""
     Label:
         id: qty
         text: ""
+
