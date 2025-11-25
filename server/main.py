@@ -1,19 +1,20 @@
-# server/main.py
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from database import Base, engine, get_db
 from models import Item
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.sql import func
 
 # Create tables if they don’t exist
 Base.metadata.create_all(bind=engine)
 
+# <-- Make sure this variable is named exactly "app" -->
 app = FastAPI(title="Meeting Task Admin API")
 
-# Allow CORS for your client apps
+# Allow CORS for client apps
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or limit to your domain
+    allow_origins=["*"],  # or your client URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,7 +22,6 @@ app.add_middleware(
 
 @app.get("/sync/download")
 def download_items(db: Session = Depends(get_db)):
-    """Return all items to client apps"""
     items = db.query(Item).all()
     result = []
     for i in items:
@@ -33,7 +33,7 @@ def download_items(db: Session = Depends(get_db)):
         })
     return {"items": result}
 
-# Optional: admin can add/update items via API
+# Optional: Admin add endpoint
 @app.post("/admin/add")
 def add_item(name: str, qty: int, db: Session = Depends(get_db)):
     import uuid
@@ -51,3 +51,4 @@ def add_item(name: str, qty: int, db: Session = Depends(get_db)):
         "name": new_item.name,
         "qty": new_item.qty
     }}
+
