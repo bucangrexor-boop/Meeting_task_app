@@ -1,0 +1,46 @@
+#:kivy 2.1.0
+<RootWidget>:
+    orientation: "vertical"
+    padding: 8
+    spacing: 8
+    BoxLayout:
+        size_hint_y: None
+        height: "40dp"
+        TextInput:
+            id: name_input
+            hint_text: "Item name"
+        TextInput:
+            id: qty_input
+            hint_text: "Qty"
+            input_filter: "int"
+        Button:
+            text: "Add"
+            on_release: root.add_new()
+    ScrollView:
+        GridLayout:
+            id: items_box
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: "48dp"
+            row_force_default: True
+    BoxLayout:
+        size_hint_y: None
+        height: "40dp"
+        Button:
+            text: "Sync"
+            on_release: root.do_sync()
+        Label:
+            id: sync_status
+            text: "Idle"
+
+<ItemRow>:
+    size_hint_y: None
+    height: "48dp"
+    orientation: "horizontal"
+    Label:
+        id: name
+        text: ""
+    Label:
+        id: qty
+        text: ""
